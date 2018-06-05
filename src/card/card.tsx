@@ -1,33 +1,33 @@
 import * as React from 'react';
-import { Card, Icon, Image } from 'semantic-ui-react';
+import { Card } from 'semantic-ui-react';
+import { EditableInput } from '../editable-input/editable-input';
+import { ConditionDropdown } from './condition-dropdown/condition-dropdown';
+import { TakeDamage } from './take-damage/take-damage';
 
-class PlayCard extends React.Component {
+export class DetailCard extends React.Component {
 	public render() {
 		return (
 			<Card>
-			<Image src='/assets/images/avatar/large/matthew.png' />
-			<Card.Content>
-			  <Card.Header>
-				Matthew
-			  </Card.Header>
-			  <Card.Meta>
-				<span className='date'>
-				  Joined in 2015
-				</span>
-			  </Card.Meta>
-			  <Card.Description>
-				Matthew is a musician living in Nashville.
-			  </Card.Description>
-			</Card.Content>
-			<Card.Content extra={true}>
-			  <a>
-				<Icon name='user' />
-				22 Friends
-			  </a>
-			</Card.Content>
-		  </Card>
+				<Card.Content>
+					<Card.Header>
+						<EditableInput placeholder="Name" />
+					</Card.Header>
+					<Card.Description>
+						<div>
+							<EditableInput placeholder="Current" />/<EditableInput placeholder="Max" /> HP
+						</div>
+						<div>
+							<EditableInput placeholder="Current" /> AC
+						</div>
+						<div>
+							<ConditionDropdown />
+						</div>
+					</Card.Description>
+				</Card.Content>
+				<Card.Content extra={true}>
+					<TakeDamage />
+				</Card.Content>
+			</Card>
 		)
 	}
 }
-
-export default PlayCard;
