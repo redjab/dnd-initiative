@@ -1,4 +1,5 @@
 import * as React from 'react';
+import styled from 'react-emotion';
 import { Input, InputProps } from 'semantic-ui-react';
 
 interface IEditableInputProps extends InputProps {
@@ -10,6 +11,19 @@ interface IEditableInputState {
 	editing: boolean;
 	value?: string;
 }
+
+const width = '100px';
+
+const FixedHeightDiv = styled('div') `
+	line-height: 38px;
+	width: ${width};
+	display: inline-block;
+	vertical-align: middle;
+`;
+
+const FixedInput = styled(Input) `
+	width: ${width};
+`
 
 export class EditableInput extends React.Component<IEditableInputProps, IEditableInputState> {
 	public inputRef: Input;
@@ -24,15 +38,15 @@ export class EditableInput extends React.Component<IEditableInputProps, IEditabl
 
 	public render() {
 		const toRender = this.state.editing ?
-			<Input
+			<FixedInput
 				placeholder={this.props.placeholder}
-				ref={this.handleRef}
+				innerRef={this.handleRef}
 				defaultValue={this.state.value}
 				onChange={this.handleChange}
 				onKeyPress={this.handleKeyPress}
 				onBlur={this.toggleEditing}
 			/> :
-			<span onClick={this.toggleEditing}>{this.state.value || this.props.placeholder}</span>
+			<FixedHeightDiv onClick={this.toggleEditing}>{this.state.value || this.props.placeholder}</FixedHeightDiv>
 		return (
 			toRender
 		)
