@@ -6,8 +6,8 @@ interface IConditionDropdownState {
 }
 
 export class ConditionDropdown extends React.Component<{}, IConditionDropdownState> {
-	constructor() {
-		super({});
+	constructor(props: {}) {
+		super(props);
 		const conditions: string[] = [
 			'Blinded',
 			'Charmed',
