@@ -13,16 +13,20 @@ interface IEditableInputState {
 }
 
 const width = '100px';
+const inputPadding = '5px';
 
-const FixedHeightDiv = styled('div') `
+const FixedHeightDiv = styled('div')`
 	line-height: 38px;
 	width: ${width};
 	display: inline-block;
 	vertical-align: middle;
+	padding-left: 20px;
 `;
 
-const FixedInput = styled(Input) `
+const FixedInput = styled(Input)`
 	width: ${width};
+	padding-left: ${inputPadding};
+	padding-right: ${inputPadding};
 `
 
 export class EditableInput extends React.Component<IEditableInputProps, IEditableInputState> {
@@ -39,7 +43,7 @@ export class EditableInput extends React.Component<IEditableInputProps, IEditabl
 	public render() {
 		const toRender = this.state.editing ?
 			<FixedInput
-				placeholder={this.props.placeholder}
+				{...this.props}
 				innerRef={this.handleRef}
 				defaultValue={this.state.value}
 				onChange={this.handleChange}
