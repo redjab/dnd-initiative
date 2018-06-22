@@ -1,3 +1,10 @@
 {
-  "extends": "./tsconfig.json"
+  "extends": "./tsconfig.json",
+  "linterOptions": {
+    "exclude": [
+      "config/**/*.js",
+      "node_modules/**/*.ts"
+    ]
+  },
+  "defaultSeverity": "error"
 }
