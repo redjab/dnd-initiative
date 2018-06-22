@@ -3,31 +3,33 @@ import styled from 'react-emotion';
 import { Input, InputProps } from 'semantic-ui-react';
 
 interface IEditableInputProps extends InputProps {
-	placeholder: string;
-	value?: string;
+	placeholder?: string;
+	initialValue?: string | number;
+	width?: string;
 }
 
 interface IEditableInputState {
 	editing: boolean;
-	value?: string;
+	value?: string | number;
 }
 
-const width = '100px';
 const inputPadding = '5px';
 
-const FixedHeightDiv = styled('div')`
-	line-height: 38px;
-	width: ${width};
-	display: inline-block;
-	vertical-align: middle;
-	padding-left: 20px;
-`;
+const FixedHeightDiv = styled('div')((props: IEditableInputProps) => ({
+	lineHeight: '38px',
+	width: props.width || 'auto',
+	display: 'inline-block',
+	verticalAlign: 'middle',
+	marginLeft: '20px',
+	borderBottom: '1px solid #ccc!important',
+}));
 
-const FixedInput = styled(Input)`
-	width: ${width};
-	padding-left: ${inputPadding};
-	padding-right: ${inputPadding};
-`
+const FixedInput = styled(Input)((props: IEditableInputProps) => ({
+	width: props.width || 'auto',
+	paddingLeft: inputPadding,
+	paddingRight: inputPadding,
+}));
+
 
 export class EditableInput extends React.Component<IEditableInputProps, IEditableInputState> {
 	public inputRef: Input;
@@ -36,21 +38,24 @@ export class EditableInput extends React.Component<IEditableInputProps, IEditabl
 		super(props);
 		this.state = {
 			editing: false,
-			value: this.props.value,
+			value: this.props.initialValue,
 		}
 	}
 
 	public render() {
+		const inputProps = { ...this.props };
+		delete inputProps.initialValue;
+
 		const toRender = this.state.editing ?
 			<FixedInput
-				{...this.props}
+				{...inputProps}
 				innerRef={this.handleRef}
 				defaultValue={this.state.value}
 				onChange={this.handleChange}
 				onKeyPress={this.handleKeyPress}
 				onBlur={this.toggleEditing}
 			/> :
-			<FixedHeightDiv onClick={this.toggleEditing}>{this.state.value || this.props.placeholder}</FixedHeightDiv>
+			<FixedHeightDiv width={this.props.width} onClick={this.toggleEditing}>{this.state.value || this.props.placeholder}</FixedHeightDiv>
 		return (
 			toRender
 		)

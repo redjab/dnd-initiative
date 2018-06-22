@@ -1,12 +1,12 @@
 import * as React from 'react';
 import './App.css';
 
-import { DetailCard } from './card/card';
+import { EncounterColumn } from './encounter-column/encounter-column';
 
 class App extends React.Component {
   public render() {
     return (
-      <DetailCard />
+      <EncounterColumn />
     );
   }
 }
