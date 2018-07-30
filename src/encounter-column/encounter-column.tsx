@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { DragDropContext } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
+import { Droppable } from 'react-beautiful-dnd';
 import { DetailCard } from '../card/card';
 import { ICardData } from '../card/card.data';
 import { Condition } from '../card/condition-dropdown/condition.constant';
@@ -19,7 +18,6 @@ export function generateCard(): ICardData {
 	}
 }
 
-@DragDropContext(HTML5Backend)
 export class EncounterColumn extends React.Component<{}, IEncounterColumnState> {
 	constructor(props: {}) {
 		super(props);
@@ -28,9 +26,15 @@ export class EncounterColumn extends React.Component<{}, IEncounterColumnState> 
 		}
 	}
 	public render() {
-		const cards = this.state.cards.map((card, index) => <DetailCard key={index} id={index.toString()} {...card} />);
+		const cards = this.state.cards.map((card, index) => <DetailCard key={index} index={index} id={index.toString()} {...card} />);
 		return (
-			cards
+			<Droppable droppableId="test">
+				{(provided) => (
+					<div ref={provided.innerRef}>
+						{cards}
+					</div>
+				)}
+			</Droppable>
 		);
 	}
 }

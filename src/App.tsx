@@ -1,12 +1,19 @@
 import * as React from 'react';
 import './App.css';
 
+import { DragDropContext } from 'react-beautiful-dnd';
 import { EncounterColumn } from './encounter-column/encounter-column';
 
 class App extends React.Component {
+  public onDragEnd = () => {
+
+  }
+
   public render() {
     return (
-      <EncounterColumn />
+      <DragDropContext onDragEnd={this.onDragEnd}>
+        <EncounterColumn />
+      </DragDropContext>
     );
   }
 }
