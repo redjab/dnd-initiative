@@ -3,6 +3,9 @@
 # dependencies
 node_modules
 
+#api key
+/src/firebase-api-key.ts
+
 # testing
 /coverage
 
