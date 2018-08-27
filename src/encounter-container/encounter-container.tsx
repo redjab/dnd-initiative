@@ -5,18 +5,20 @@ import { ICardData } from '../card/card.data';
 import { EncounterColumn } from '../encounter-column/encounter-column';
 import { IEncounterColumnData } from '../encounter-column/encouter-column.data';
 import { firestore } from '../firebase';
+import { DroppableType } from '../utils/drag-drop-type';
+import { reorder } from '../utils/reorder';
 
 export interface IEncounterContainerState {
-	columns: IEncounterColumnData[];
+	columns: { [key: string]: IEncounterColumnData };
 }
 
 export class EncounterContainer extends React.Component<any, IEncounterContainerState> {
 	constructor(props: any) {
 		super(props);
-		this.state = { columns: [] }
+		this.state = { columns: {} }
 	}
 	public componentDidMount() {
-		const columns: IEncounterColumnData[] = [];
+		const columns: { [key: string]: IEncounterColumnData } = {};
 		const encountersRef = firestore.collection('encounters');
 		encountersRef.get().then((collection) => {
 			collection.forEach((doc) => {
@@ -24,7 +26,7 @@ export class EncounterContainer extends React.Component<any, IEncounterContainer
 					id: doc.id,
 					cards: doc.data().cards as ICardData[],
 				};
-				columns.push(columnData);
+				columns[doc.id] = columnData;
 			});
 			this.setState({
 				columns
@@ -32,13 +34,33 @@ export class EncounterContainer extends React.Component<any, IEncounterContainer
 		});
 	}
 	public onDragEnd = (result: DropResult) => {
-		console.log(result);
+		if (!result.destination) {
+			return;
+		}
+
+		const source = result.source;
+		const destination = result.destination;
+
+		if (source.droppableId === destination.droppableId && source.index === destination.index) {
+			return;
+		}
+
+		if (result.type === DroppableType.Column) {
+			if (source.droppableId === destination.droppableId) {
+				const column: IEncounterColumnData = this.state.columns[source.droppableId];
+				const cards = column.cards;
+				const ordered = reorder(cards, source.index, destination.index);
+				this.setState({
+					columns: { ...this.state.columns, [source.droppableId]: { id: source.droppableId, cards: ordered } }
+				})
+			}
+		}
 	}
 
 	public render() {
 		return (
 			<DragDropContext onDragEnd={this.onDragEnd}>
-				{this.state.columns.map((column) => <EncounterColumn key={column.id} {...column} />)}
+				{Object.keys(this.state.columns).map((key) => <EncounterColumn key={key} {...this.state.columns[key]} />)}
 			</DragDropContext>
 		);
 	}

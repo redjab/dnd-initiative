@@ -3,6 +3,7 @@ import { Draggable } from 'react-beautiful-dnd';
 import styled from 'react-emotion';
 import { Card, CardProps } from 'semantic-ui-react';
 import { EditableInput } from '../editable-input/editable-input';
+import { DraggableType } from '../utils/drag-drop-type';
 import { ICardData } from './card.data';
 import { ConditionDropdown } from './condition-dropdown/condition-dropdown';
 import { TakeDamage } from './take-damage/take-damage';
@@ -32,6 +33,7 @@ export class DetailCard extends React.Component<IDetailCardProps> {
 		const inlineInputWidth = '100px';
 		return (
 			<Draggable
+				type={DraggableType.Card}
 				key={this.props.id}
 				draggableId={this.props.id}
 				index={this.props.index}>
