@@ -6,4 +6,5 @@ export interface ICardData {
 	maxHP?: number;
 	currentAC?: number;
 	conditions?: Condition[];
+	index: number;
 }

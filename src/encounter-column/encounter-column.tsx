@@ -17,7 +17,7 @@ export class EncounterColumn extends React.Component<IEncounterColumnData> {
 	}
 
 	public render() {
-		const cards = this.props.cards.map((card, index) => <DetailCard key={card.name + index} index={index} id={card.name + index} {...card} />);
+		const cards = this.props.cards.map((card) => <DetailCard key={card.name + card.index} index={card.index} id={card.name + card.index} {...card} />);
 		return (
 			<Droppable
 				type={DroppableType.Column}

@@ -29,6 +29,9 @@ export interface IDetailCardProps extends CardProps, ICardData {
 }
 
 export class DetailCard extends React.Component<IDetailCardProps> {
+	public onValueChanges = (value: any) => {
+		// TODO: Debounce here
+	};
 	public render() {
 		const inlineInputWidth = '100px';
 		return (
@@ -46,7 +49,7 @@ export class DetailCard extends React.Component<IDetailCardProps> {
 										<FlexContainer>
 											<ColumnOne>test</ColumnOne>
 											<ColumnTwo>
-												<EditableInput placeholder="Name" initialValue={this.props.name} />
+												<EditableInput placeholder="Name" initialValue={this.props.name} valueChanges={this.onValueChanges} />
 											</ColumnTwo>
 										</FlexContainer>
 									</Card.Header>
@@ -55,11 +58,11 @@ export class DetailCard extends React.Component<IDetailCardProps> {
 											<ColumnOne>test</ColumnOne>
 											<ColumnTwo>
 												<div>
-													<EditableInput placeholder="Current" initialValue={this.props.currentHP} width={inlineInputWidth} type="number" />/
-												<EditableInput placeholder="Max" initialValue={this.props.maxHP} width={inlineInputWidth} type="number" /> HP
+													<EditableInput placeholder="Current" initialValue={this.props.currentHP} width={inlineInputWidth} valueChanges={this.onValueChanges} type="number" />/
+												<EditableInput placeholder="Max" initialValue={this.props.maxHP} width={inlineInputWidth} valueChanges={this.onValueChanges} type="number" /> HP
 											</div>
 												<div>
-													<EditableInput placeholder="Current" initialValue={this.props.currentAC} width={inlineInputWidth} /> AC
+													<EditableInput placeholder="Current" initialValue={this.props.currentAC} width={inlineInputWidth} valueChanges={this.onValueChanges}/> AC
 											</div>
 												<div>
 													<ConditionDropdown initialConditions={this.props.conditions || []} />

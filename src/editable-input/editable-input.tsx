@@ -6,6 +6,7 @@ interface IEditableInputProps extends InputProps {
 	placeholder?: string;
 	initialValue?: string | number;
 	width?: string;
+	valueChanges?: (value: any) => void;
 }
 
 interface IEditableInputState {
@@ -43,8 +44,7 @@ export class EditableInput extends React.Component<IEditableInputProps, IEditabl
 	}
 
 	public render() {
-		const inputProps = { ...this.props };
-		delete inputProps.initialValue;
+		const { initialValue, valueChanges, ...inputProps} = { ...this.props };
 
 		const toRender = this.state.editing ?
 			<FixedInput
@@ -78,10 +78,15 @@ export class EditableInput extends React.Component<IEditableInputProps, IEditabl
 	}
 
 	private handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const value = event.target.value;
 		this.setState({
 			...this.state,
-			...{ value: event.target.value }
-		})
+			...{ value }
+		}, () => {
+			if (this.props.valueChanges) {
+				this.props.valueChanges(value);
+			}
+		});
 	}
 
 	private handleRef = (ref: Input) => {

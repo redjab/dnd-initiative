@@ -7,6 +7,7 @@ import { IEncounterColumnData } from '../encounter-column/encouter-column.data';
 import { firestore } from '../firebase';
 import { DroppableType } from '../utils/drag-drop-type';
 import { reorder } from '../utils/reorder';
+import { sortBy } from '../utils/sort-by';
 
 export interface IEncounterContainerState {
 	columns: { [key: string]: IEncounterColumnData };
@@ -20,11 +21,14 @@ export class EncounterContainer extends React.Component<any, IEncounterContainer
 	public componentDidMount() {
 		const columns: { [key: string]: IEncounterColumnData } = {};
 		const encountersRef = firestore.collection('encounters');
-		encountersRef.get().then((collection) => {
+		encountersRef.orderBy('index').get().then((collection) => {
 			collection.forEach((doc) => {
+				const cards = doc.data().cards as ICardData[];
+				const sortedCards = sortBy(cards, (card) => card.index);
 				const columnData: IEncounterColumnData = {
 					id: doc.id,
-					cards: doc.data().cards as ICardData[],
+					cards: sortedCards,
+					index: doc.data().index,
 				};
 				columns[doc.id] = columnData;
 			});
@@ -51,8 +55,9 @@ export class EncounterContainer extends React.Component<any, IEncounterContainer
 				const cards = column.cards;
 				const ordered = reorder(cards, source.index, destination.index);
 				this.setState({
-					columns: { ...this.state.columns, [source.droppableId]: { id: source.droppableId, cards: ordered } }
-				})
+					columns: { ...this.state.columns, [source.droppableId]: { id: source.droppableId, cards: ordered, index: destination.index } }
+				});
+				firestore.collection('encounters').doc(destination.droppableId).update({ cards: ordered });
 			}
 		}
 	}
