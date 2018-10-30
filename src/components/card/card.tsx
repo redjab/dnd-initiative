@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import styled from 'react-emotion';
 import { Card, CardProps } from 'semantic-ui-react';
-import { CardModel } from '../data/model/card.model';
+import { Card as CardData } from '../data/card';
 import { EditableInput } from '../editable-input/editable-input';
 import { DraggableType } from '../utils/drag-drop-type';
 import { ConditionDropdown } from './condition-dropdown/condition-dropdown';
@@ -23,7 +23,7 @@ const StyledCard = styled('div')`
 	margin-bottom: 16px;
 `
 
-export interface IDetailCardProps extends CardProps, CardModel {
+export interface IDetailCardProps extends CardProps, CardData {
 	id: string;
 	index: number;
 }

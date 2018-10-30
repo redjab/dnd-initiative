@@ -1,7 +1,7 @@
 import { Condition } from "./condition";
+import { IdObject } from "./idObject";
 
-export interface Card {
-	id: string;
+export interface Card extends IdObject {
 	encounterId: string;
 	boardId: string;
 	name: string;

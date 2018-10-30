@@ -1,25 +1,33 @@
 import * as React from 'react';
 
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
-import { EncounterModel } from 'src/data/model/encounter.model';
+import { getCardSubCollection } from 'src/api/card.api';
+import { getEncounterSubCollection } from 'src/api/encounter.api';
 // import { reorder } from '../utils/reorder';
 // import { sortBy } from '../utils/sort-by';
-import * as boardApi from '../api/board.api';
+import * as boardApi from '../../api/board.api';
+import { debug } from '../../utils/debug';
+import { DroppableType } from '../../utils/drag-drop-type';
+// import { Encounter } from '../data/encounter';
 // import { ICardData } from '../card/card.data';
 import { EncounterColumn } from '../encounter-column/encounter-column';
-import { DroppableType } from '../utils/drag-drop-type';
 
-export interface IEncounterContainerState {
-	columns: { [key: string]: EncounterModel };
-}
+// export interface IEncounterContainerState {
+// 	columns: { [key: string]: Encounter };
+// }
 
-export class EncounterContainer extends React.Component<any, IEncounterContainerState> {
+export class Board extends React.Component<Board> {
 	constructor(props: any) {
 		super(props);
 		this.state = { columns: {} }
 	}
 	public componentDidMount() {
-		boardApi.getBoardDoc('X2r4nX2IEWOcH9GyTADr').then((data) => console.log(data));
+		boardApi.getBoardDoc('X2r4nX2IEWOcH9GyTADr')
+			.then((data) => debug(data))
+			.then((data) => getEncounterSubCollection(data.id))
+			.then((data) => debug(data))
+			.then((data) => getCardSubCollection('X2r4nX2IEWOcH9GyTADr', data[0].id))
+			.then((data) => debug(data));
 		// const columns: { [key: string]: IEncounterColumnData } = {};
 		// const encountersRef = firestore.collection('encounters');
 		// encountersRef.orderBy('index').get()
