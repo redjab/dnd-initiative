@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 import styled from 'react-emotion';
+import { EncounterModel } from 'src/data/model/encounter.model';
 import { DetailCard } from '../card/card';
 import { DroppableType } from '../utils/drag-drop-type';
-import { IEncounterColumnData } from './encouter-column.data';
 
 const StyledColumn = styled('div')`
 	background: grey;
 	display: inline-block;
 `
 
-export class EncounterColumn extends React.Component<IEncounterColumnData> {
-	constructor(props: IEncounterColumnData) {
+export class EncounterColumn extends React.Component<EncounterModel> {
+	constructor(props: EncounterModel) {
 		super(props);
 		this.state = { cards: [] };
 	}

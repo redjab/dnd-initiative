@@ -2,9 +2,9 @@ import * as React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import styled from 'react-emotion';
 import { Card, CardProps } from 'semantic-ui-react';
+import { CardModel } from '../data/model/card.model';
 import { EditableInput } from '../editable-input/editable-input';
 import { DraggableType } from '../utils/drag-drop-type';
-import { ICardData } from './card.data';
 import { ConditionDropdown } from './condition-dropdown/condition-dropdown';
 import { TakeDamage } from './take-damage/take-damage';
 
@@ -23,7 +23,7 @@ const StyledCard = styled('div')`
 	margin-bottom: 16px;
 `
 
-export interface IDetailCardProps extends CardProps, ICardData {
+export interface IDetailCardProps extends CardProps, CardModel {
 	id: string;
 	index: number;
 }
@@ -62,7 +62,7 @@ export class DetailCard extends React.Component<IDetailCardProps> {
 												<EditableInput placeholder="Max" initialValue={this.props.maxHP} width={inlineInputWidth} valueChanges={this.onValueChanges} type="number" /> HP
 											</div>
 												<div>
-													<EditableInput placeholder="Current" initialValue={this.props.currentAC} width={inlineInputWidth} valueChanges={this.onValueChanges}/> AC
+													<EditableInput placeholder="Current" initialValue={this.props.currentAC} width={inlineInputWidth} valueChanges={this.onValueChanges} /> AC
 											</div>
 												<div>
 													<ConditionDropdown initialConditions={this.props.conditions || []} />

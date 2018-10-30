@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Dropdown, DropdownItemProps } from 'semantic-ui-react';
-import { Condition } from './condition.constant';
+import { Condition } from '../../data/condition';
 
 export interface IConditionDropdownState {
 	conditions: DropdownItemProps[];

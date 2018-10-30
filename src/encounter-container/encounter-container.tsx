@@ -1,16 +1,16 @@
 import * as React from 'react';
 
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
-import { ICardData } from '../card/card.data';
+import { EncounterModel } from 'src/data/model/encounter.model';
+// import { reorder } from '../utils/reorder';
+// import { sortBy } from '../utils/sort-by';
+import * as boardApi from '../api/board.api';
+// import { ICardData } from '../card/card.data';
 import { EncounterColumn } from '../encounter-column/encounter-column';
-import { IEncounterColumnData } from '../encounter-column/encouter-column.data';
-import { firestore } from '../firebase';
 import { DroppableType } from '../utils/drag-drop-type';
-import { reorder } from '../utils/reorder';
-import { sortBy } from '../utils/sort-by';
 
 export interface IEncounterContainerState {
-	columns: { [key: string]: IEncounterColumnData };
+	columns: { [key: string]: EncounterModel };
 }
 
 export class EncounterContainer extends React.Component<any, IEncounterContainerState> {
@@ -19,23 +19,30 @@ export class EncounterContainer extends React.Component<any, IEncounterContainer
 		this.state = { columns: {} }
 	}
 	public componentDidMount() {
-		const columns: { [key: string]: IEncounterColumnData } = {};
-		const encountersRef = firestore.collection('encounters');
-		encountersRef.orderBy('index').get().then((collection) => {
-			collection.forEach((doc) => {
-				const cards = doc.data().cards as ICardData[];
-				const sortedCards = sortBy(cards, (card) => card.index);
-				const columnData: IEncounterColumnData = {
-					id: doc.id,
-					cards: sortedCards,
-					index: doc.data().index,
-				};
-				columns[doc.id] = columnData;
-			});
-			this.setState({
-				columns
-			});
-		});
+		boardApi.getBoardDoc('X2r4nX2IEWOcH9GyTADr').then((data) => console.log(data));
+		// const columns: { [key: string]: IEncounterColumnData } = {};
+		// const encountersRef = firestore.collection('encounters');
+		// encountersRef.orderBy('index').get()
+		// 	.then((collection) => {
+		// 		const cardIds: string[] = [];
+		// 		collection.forEach((doc) => {
+		// 			cardIds.push(doc.data().cards);
+		// 			// const columnData: IEncounterColumnData = {
+		// 			// 	id: doc.id,
+		// 			// 	cards: [],
+		// 			// 	index: doc.data().index,
+		// 			// };
+		// 			// columns[doc.id] = columnData;
+		// 		});
+		// 		const cardsRef = firestore.collection('cards');
+		// 		return cardsRef.get();
+		// 	})
+		// 	.then((cardCollection) => {
+		// 		console.log(cardCollection.docs);
+		// 	})
+		// this.setState({
+		// 	columns
+		// });
 	}
 	public onDragEnd = (result: DropResult) => {
 		if (!result.destination) {
@@ -51,13 +58,13 @@ export class EncounterContainer extends React.Component<any, IEncounterContainer
 
 		if (result.type === DroppableType.Column) {
 			if (source.droppableId === destination.droppableId) {
-				const column: IEncounterColumnData = this.state.columns[source.droppableId];
-				const cards = column.cards;
-				const ordered = reorder(cards, source.index, destination.index);
-				this.setState({
-					columns: { ...this.state.columns, [source.droppableId]: { id: source.droppableId, cards: ordered, index: destination.index } }
-				});
-				firestore.collection('encounters').doc(destination.droppableId).update({ cards: ordered });
+				// const column: EncounterModel = this.state.columns[source.droppableId];
+				// const cards = column.cards;
+				// const ordered = reorder(cards, source.index, destination.index);
+				// this.setState({
+				// 	columns: { ...this.state.columns, [source.droppableId]: { id: source.droppableId, cards: ordered, index: destination.index } }
+				// });
+				// firestore.collection('encounters').doc(destination.droppableId).update({ cards: ordered });
 			}
 		}
 	}

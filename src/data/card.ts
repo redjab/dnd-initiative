@@ -1,6 +1,9 @@
-import { Condition } from "./condition-dropdown/condition.constant";
+import { Condition } from "./condition";
 
-export interface ICardData {
+export interface Card {
+	id: string;
+	encounterId: string;
+	boardId: string;
 	name: string;
 	currentHP?: number;
 	maxHP?: number;
